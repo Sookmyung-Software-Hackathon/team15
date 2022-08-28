@@ -9,11 +9,11 @@ import smswh.domain.activity.Activity;
 import smswh.repository.ActivityRepository;
 import smswh.web.ScriptUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static smswh.web.ScriptUtils.alertAndMovePage;
 import static smswh.web.SessionConst.*;
 import static smswh.domain.activity.ActivityStatus.SCHEDULED;
 
@@ -25,29 +25,43 @@ public class ActivityController {
 
     private final ActivityRepository activityRepository;
 
-    @PostMapping("url 입력")
-    public String upload(@SessionAttribute(name = ACTIVITY) Activity activity, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Activity uploadingActivity = (Activity) request.getSession().getAttribute(ACTIVITY);
-
-        if(uploadingActivity.getMaxAppliers() < 2) {
-            ScriptUtils.alertAndBackPage(response, "인원 수는 2명 이상 되어야 합니다.");
-        }
-        activity.getApplyMembers().add(activity.getUploader());
-        activityRepository.save(activity);
-        return "리다이렉트 url";
+    @GetMapping("/activitylist")
+    public String list() {
+        return "activityList";
     }
 
-    @PostMapping ("url 입력")
+
+    @GetMapping("/post")
+    public String post() {
+        return "newActivity.html";
+    }
+
+    @PostMapping("/activities/new")
+    public String create(@SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember, ActivityForm form, HttpServletResponse response ) throws IOException {
+        if(loginMember == null) {
+            alertAndMovePage(response, "글을 작성하시려면 먼저 로그인해주세요.", "/login");
+            return null;
+        }
+
+        Activity activity = new Activity();
+        activity.setTitle(form.getTitle());
+        activity.setExplanation(form.getExplanation());
+
+        return "activityList";
+
+    }
+
+    @PostMapping ("deleteActivity.html") // activityInfo에서 삭제 버튼 클릭하면 여기로 링크.
     public String delete(@SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember, Activity activity, HttpServletResponse response) throws IOException {
         // 글을 삭제하려는 사람과 작성자가 같아야 삭제가 가능함...
         if(loginMember != activity.getUploader()) {
             ScriptUtils.alertAndBackPage(response, "작성자만 삭제 가능합니다.");
         }
         activityRepository.remove(activity);
-        return "리다이렉트 url";
+        return "/activitylist";
     }
 
-    @PostMapping("url 입력")
+    @PostMapping("acceptApply.html") // 신청 버튼 누르면 여기로 이동함
     public String applyActivity(@SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember, Activity activity, HttpServletResponse response) throws IOException {
 
         // 이미 신청한 회원인 경우
@@ -57,6 +71,9 @@ public class ActivityController {
 
         activityRepository.add(activity, loginMember);
 
-        return "리다이렉트 url";
+        return "/activitylist";
     }
+
+    @PostMapping
+
 }

@@ -19,6 +19,7 @@ public class Member {
 
     private String password;
 
+    @Column(name = "name")
     private String name;
 
     private int age;
@@ -38,7 +39,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-//    private List<WriteText> writeTexts = new ArrayList<>(); 작성 게시글 목록
+//    private List<FreeWriting> myFreeWritings = new ArrayList<>(); 작성 게시글 목록
 
     @OneToMany(mappedBy = "uploader")
     private List<Activity> uploadActivities = new ArrayList<>();

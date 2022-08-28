@@ -28,20 +28,20 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "login.html";
     }
 
     @PostMapping("/login")
     public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        if(bindingResult.hasErrors())   return "login/loginForm";
+        if(bindingResult.hasErrors())   return "login.html";
         Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
         log.info("login? {}", loginMember);
 
         if(loginMember == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             ScriptUtils.alertAndBackPage(response, "아이디 또는 비밀번호가 맞지 않습니다.");
-            return "login/loginForm";
+            return "login.html";
         }
 
         HttpSession session = request.getSession();
