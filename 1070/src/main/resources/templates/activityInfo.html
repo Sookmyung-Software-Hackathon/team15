@@ -1,0 +1,80 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>커피 바리스타 강의계획서</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+</head>
+
+<body style="text-align:center;">
+<style>
+    h1{
+        font-size: 30px;
+        color: black;
+        text-transform: uppercase;
+        font-weight: 300;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    h2{
+        font-size: 23px;
+        color: black;
+        text-transform: uppercase;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    body {
+        padding:1.5em;
+        background: black;
+    }
+    body{
+        font-family: 'Roboto', sans-serif;
+        background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+    }
+    section{
+        margin: 80px;
+    }
+</style>
+
+<h2 style="font-size:30px;" >
+    <p th:text="${post.title}">강좌 제목</p>
+</h2>
+<img src="cof1.jpeg" width="300" height="300">
+<img src="cof2.jpeg" width="300" height="300">
+<h2>
+    <ol th:text='"작성자 : "+"${post.uploader}"'>게시물 작성자<br></ol>
+    <ol th:text='"작성일 : "+"${post.createdDate}"'>게시물 작성자<br></ol>
+    <ol th:text='"강사 : "+"${post.teacher}"'>강사 : 공유<br></ol>
+    <ol th:text='"교육 일시 : "+"${post.plannedDateTime}"'>교육일시 : 월, 수 (19:00 ~ 22:00)<br></ol>
+    <ol th:text='"장소 : "+"${post.location}"'>장소 : 인천광역시 문화회관 305호<br></ol>
+    <ol th:text='"최대 수강 인원 : "+"${post.maxAppliers}" + "명"'>최대 수강 인원 : 12<br></ol>
+    <ol th:text='"유의사항 : "+"${post.explanation}"'>유의사항 : 인천 시민의 경우 10% 할인<br></ol>
+</h2>
+<style>
+    button{
+        width:120px;
+        height:40px;
+        color:#fff;
+        background:#004fff;
+        font-size:16px;
+        border:none;
+        border-radius:20px;
+        box-shadow: 0 4px 16px rgba(0,79,255,0.3);
+        transition:0.3s;
+        position:absolute;
+    }
+    button:focus{
+        outline:0;
+    }
+    button:hover{
+        background:rgba(0,79,255,0.9);
+        cursor:pointer;
+        box_shadow: 0.2px 4px rgba(0,79,255,0.6;)
+    }
+</style>
+<button type="button" onclick="location.href='/activitylist'">이전</button>
+<button type="button" onclick="location.href='acceptApply.html'">신청하기</button>
+
+</body>
+</html>
